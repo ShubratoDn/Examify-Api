@@ -75,6 +75,16 @@ public class UserController {
 			return new ResponseEntity<>(fileValidation, HttpStatus.BAD_REQUEST);
 		}
 		
+		
+		
+		//upload file
+		String fileName = fileServices.uploadFile(file, Constants.FILE_USER_IMAGE);
+		if(fileName == null) {
+			return ResponseEntity.badRequest().body(new ApiResponse("error", "File Upload failed"));
+		}else {			
+			userDto.setImage(fileName);
+		}
+		
 		return ResponseEntity.ok(userDto);		
 	}
 	
