@@ -14,4 +14,10 @@ public class HomeController {
 		return ResponseEntity.ok("Working smoothly");
 	}
 	
+	
+	@GetMapping("/test2")
+	public ResponseEntity<?> test2(){
+		return ResponseEntity.ok("This is TEST 2");
+	}
+	
 }

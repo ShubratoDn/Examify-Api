@@ -12,9 +12,16 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,8 +29,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.api.examify.DTO.UserDto;
 import com.api.examify.configs.Constants;
+import com.api.examify.configs.jwt.JWTTokenUtil;
+import com.api.examify.configs.security.CustomUserDetailsServiceImpl;
 import com.api.examify.entities.UserRole;
 import com.api.examify.payloads.ApiResponse;
+import com.api.examify.payloads.LoginRequest;
+import com.api.examify.payloads.LoginResponse;
 import com.api.examify.payloads.ValidationResponse;
 import com.api.examify.repositories.UserRoleRepo;
 import com.api.examify.services.FileServices;
@@ -52,6 +63,16 @@ public class AuthController {
 
 	@Autowired
 	private UserServices userServices;
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+		
+	@Autowired
+	private CustomUserDetailsServiceImpl customUserDetailsServiceImpl;
+	
+	@Autowired
+	private JWTTokenUtil jwtTokenUtil;
+	
 
 	@PostMapping("/register")
 	public ResponseEntity<?> register(@RequestParam(value = "image", required = false) MultipartFile file,
@@ -155,6 +176,47 @@ public class AuthController {
 			return ResponseEntity.ok(new ApiResponse("error", "User Can not be deleted"));
 		}
 	}
+	
+	
+	
+	
+	
+	//login user
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
+		
+		String username = loginRequest.getUsername();
+		String password = loginRequest.getPassword();
+
+		//authentication kortesi j User er password thik ache ki na
+		 try {
+	        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+	    } catch (DisabledException e) {
+	        return ResponseEntity.badRequest().body(new ApiResponse("error", "User account is disabled."));
+	    } catch (BadCredentialsException e) {
+	        // Return a response for incorrect password
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse("error", "Incorrect username or password."));
+	    } catch (InternalAuthenticationServiceException e) {
+	        return ResponseEntity.badRequest().body(new ApiResponse("error", "User not found."));
+	    }
+		
+		UserDetails userDetails = customUserDetailsServiceImpl.loadUserByUsername(username);
+		String token = jwtTokenUtil.generateToken(userDetails);
+		
+		
+		
+		UserDto userDto = new UserDto();
+		userDto.setEmail(username);
+		
+		UserDto user = userServices.getUserByEmail(userDto);
+		
+		LoginResponse loginResponse = new LoginResponse();
+		loginResponse.setToken(token);
+		loginResponse.setUser(user);
+		
+		return ResponseEntity.ok(loginResponse);
+	}
+	
 	
 
 }

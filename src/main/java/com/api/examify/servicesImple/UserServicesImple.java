@@ -2,6 +2,7 @@ package com.api.examify.servicesImple;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.api.examify.DTO.UserDto;
@@ -17,13 +18,18 @@ public class UserServicesImple implements UserServices {
 
 	@Autowired
 	private ModelMapper modelMapper;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder; 
 
 	//registering user
 	@Override
 	public UserDto registerUser(UserDto userDto) {
 		User user = modelMapper.map(userDto, User.class);		
-		User savedUser = userRepo.save(user);
 		
+		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		
+		User savedUser = userRepo.save(user);		
 		UserDto addedUser = modelMapper.map(savedUser, UserDto.class);
 		
 		return addedUser;
