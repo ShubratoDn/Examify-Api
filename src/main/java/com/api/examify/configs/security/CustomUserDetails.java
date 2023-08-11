@@ -33,6 +33,7 @@ public class CustomUserDetails implements UserDetails {
 		
 		for(UserRole role: roles) {
 			authorities.add(new SimpleGrantedAuthority(role.getRole()));
+			System.out.println("My Role Is : " +role.getRole());
 		}
 		
 		return authorities;

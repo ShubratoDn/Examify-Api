@@ -1,6 +1,8 @@
 package com.api.examify.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,9 +17,15 @@ public class HomeController {
 	}
 	
 	
+	@PreAuthorize("hasRole('STUDENT')")
 	@GetMapping("/test2")
-	public ResponseEntity<?> test2(){
-		return ResponseEntity.ok("This is TEST 2");
+	public ResponseEntity<?> test2(){		 
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		
+		
+		
+		
+		return ResponseEntity.ok("This is TEST 2 : " + name);
 	}
 	
 }

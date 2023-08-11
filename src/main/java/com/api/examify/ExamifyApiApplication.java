@@ -34,15 +34,15 @@ public class ExamifyApiApplication implements CommandLineRunner {
 	
 		UserRole role1 = new UserRole();
 		role1.setId(Constants.ROLE_ADMIN);
-		role1.setRole("ADMIN");
+		role1.setRole("ROLE_ADMIN");
 		
 		UserRole role2 = new UserRole();
 		role2.setId(Constants.ROLE_TEACHER);
-		role2.setRole("TEACHER");
+		role2.setRole("ROLE_TEACHER");
 		
 		UserRole role3 = new UserRole();
 		role3.setId(Constants.ROLE_STUDENT);
-		role3.setRole("STUDENT");
+		role3.setRole("ROLE_STUDENT");
 		
 		
 		  // Create a list of UserRole instances
