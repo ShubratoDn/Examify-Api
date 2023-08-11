@@ -1,6 +1,7 @@
 package com.api.examify.DTO;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import com.api.examify.entities.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -8,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -22,11 +22,12 @@ public class UserDto {
 	
 	private Long id;
 	
-	@NotBlank(message = "Insert Email")
-	@Email(message = "Insert a valid email")
+	@NotBlank(message = "Email is required")
+	@Email(message = "Please provide a valid email address")
 	private String email;
 	
-	@Size(min = 4, message = "Password need minimum 4 character")
+	@NotBlank(message = "Password cannot be empty")
+	@Size(min = 4, message = "Password must be at least 4 characters long")
 	private String password;
 	
 	@JsonProperty
@@ -38,15 +39,18 @@ public class UserDto {
 	public String getPassword() {
 		return this.password;
 	}
-
-	@NotBlank(message = "Insert your name")
+	
+	
+	@NotBlank(message = "Name is required")
 	private String name;
 	
-	@NotNull(message = "Select your role")
-	private UserRole role;
+	@NotNull(message = "Please select a role")
+	private List<UserRole> roles;
 	
-	private Timestamp date_join;	
+	private Timestamp dateJoin;	
 	
 	private String image;	
+	
+	private String about;
 	
 }

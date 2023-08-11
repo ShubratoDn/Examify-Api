@@ -1,12 +1,14 @@
 package com.api.examify.entities;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,11 +28,13 @@ public class User {
 	private String email;
 	private String password;
 	
-	@ManyToOne
-	private UserRole role;
-	
-	private Timestamp date_join;
+	@ManyToMany( fetch = FetchType.EAGER)
+	private List<UserRole> roles;
+
+	private Timestamp dateJoin;	
 	private String image;
+	
+	
 	
 	
 }

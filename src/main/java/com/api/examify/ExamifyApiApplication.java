@@ -2,10 +2,12 @@ package com.api.examify;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 import com.api.examify.configs.Constants;
 import com.api.examify.entities.UserRole;
@@ -16,6 +18,11 @@ public class ExamifyApiApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ExamifyApiApplication.class, args);
+	}
+	
+	@Bean
+	ModelMapper modelMapper() {
+		return new ModelMapper();
 	}
 
 	
