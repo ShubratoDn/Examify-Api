@@ -3,6 +3,7 @@ package com.api.examify.entities;
 import java.sql.Timestamp;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -34,7 +35,8 @@ public class User {
 	private Timestamp dateJoin;	
 	private String image;
 	
-	
+	@Column(length = 300)
+	private String token;
 	
 	
 }

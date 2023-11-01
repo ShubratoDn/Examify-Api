@@ -54,8 +54,8 @@ public class FileServiceImple implements FileServices {
         }
 
         // Check image size
-        if (!(fileSizeInKb > 50) || !(fileSizeInKb < 1000)) {
-            response.put("image", "Image size should be within 50KB and 1MB.");
+        if (!(fileSizeInKb > 20) || !(fileSizeInKb < 6000)) {
+            response.put("image", "Image size should be within 20KB and 6MB.");
             return response;
         }
         return null;

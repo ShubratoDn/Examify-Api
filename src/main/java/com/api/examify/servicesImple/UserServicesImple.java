@@ -1,5 +1,8 @@
 package com.api.examify.servicesImple;
 
+import java.security.SecureRandom;
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +24,25 @@ public class UserServicesImple implements UserServices {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder; 
+	
+	
+	
+	private final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-";
+    private final int TOKEN_LENGTH = 50; // Adjust the length as needed
+
+    public String generateToken() {
+        SecureRandom random = new SecureRandom();
+        StringBuilder token = new StringBuilder();
+
+        for (int i = 0; i < TOKEN_LENGTH; i++) {
+            int randomIndex = random.nextInt(CHARACTERS.length());
+            char randomChar = CHARACTERS.charAt(randomIndex);
+            token.append(randomChar);
+        }
+
+        return token.toString();
+    }
+
 
 	//registering user
 	@Override
@@ -28,6 +50,7 @@ public class UserServicesImple implements UserServices {
 		User user = modelMapper.map(userDto, User.class);		
 		
 		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		user.setToken(generateToken());
 		
 		User savedUser = userRepo.save(user);		
 		UserDto addedUser = modelMapper.map(savedUser, UserDto.class);
@@ -64,6 +87,15 @@ public class UserServicesImple implements UserServices {
         }
 		
 		return false;
+	}
+
+
+	@Override
+	public UserDto getUserById(Long id) {
+		Optional<User> findById = userRepo.findById(id);
+		User user = (User) findById.get();
+		UserDto map = modelMapper.map(user, UserDto.class);
+		return map;
 	}
 	
 

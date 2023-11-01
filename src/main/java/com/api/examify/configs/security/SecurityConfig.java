@@ -38,9 +38,11 @@ public class SecurityConfig {
 	
 	// List of whitelisted endpoints that are allowed without authentication
 	public static final String[] ENDPOINTS_WHITELIST = {
-        "/api/v1/login",
-        "/api/v1/register",
-        "/api/v1/test"
+        "/api/v1/auth/login",
+        "/api/v1/auth/register",
+        "/api/v1/test",
+        "UserImages/**",
+        "/api/v1/auth/delete/user/**",
     };	
 	
 	@Bean
@@ -49,12 +51,14 @@ public class SecurityConfig {
 			.and().csrf().disable() // Disable CSRF protection
 			.authorizeHttpRequests(auth ->
 				auth.requestMatchers(ENDPOINTS_WHITELIST).permitAll() // Permit whitelisted endpoints without authentication
+					.requestMatchers("/login").permitAll()
 					.anyRequest().authenticated()) // Require authentication for other endpoints
 			.exceptionHandling()
 				.authenticationEntryPoint(authenticationEntryPoint) // Configure authentication entry point for handling unauthenticated requests
 				.accessDeniedHandler(new CustomAccessDeniedHandler()) // Set custom handler for access denied responses
 			.and()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // Use stateless sessions
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Use stateless sessions
+			;
 		
 		// Configure authentication provider
 		http.authenticationProvider(authenticationProvider());

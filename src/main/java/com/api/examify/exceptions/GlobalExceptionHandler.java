@@ -4,6 +4,7 @@ package com.api.examify.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,6 +18,11 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex){		
 		return new ResponseEntity<>(new ExceptionResponse("HttpMessageNotReadableException","Form data not found"), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(UsernameNotFoundException.class)
+	public ResponseEntity<?> handleUsernameNotFoundException(UsernameNotFoundException ex){		
+		return new ResponseEntity<>(new ExceptionResponse("UsernameNotFoundException","Username not found"), HttpStatus.FORBIDDEN);
 	}
 	
 	

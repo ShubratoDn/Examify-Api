@@ -7,6 +7,7 @@ public interface UserServices {
 	
 	public UserDto getUserByEmail(UserDto userDto);
 	
+	public UserDto getUserById(Long id);
 	
 	public boolean deleteUser(UserDto userDto);
 	

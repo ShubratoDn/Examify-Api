@@ -48,7 +48,7 @@ import jakarta.validation.ValidatorFactory;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/auth")
 @Slf4j
 public class AuthController {
 
@@ -122,7 +122,7 @@ public class AuthController {
 		//checking if the user is already exist in the database or not
 		if(userServices.getUserByEmail(userDto) != null)  {
 			Map<String, String> map = new HashMap<>();
-			map.put("email", "Email already exist for this role");
+			map.put("email", "Email already exist! Please, login or change email");
 			return ResponseEntity.badRequest().body(map);
 		}
 		
@@ -168,6 +168,11 @@ public class AuthController {
 	public ResponseEntity<?> deleteUser(@PathVariable Long id){
 		UserDto user = new UserDto();
 		user.setId(id);
+		
+		UserDto userById = userServices.getUserById(id);
+		if(userById == null) {
+			return ResponseEntity.ok(new ApiResponse("error", "User name not found"));
+		}
 		
 		boolean deleteUser = userServices.deleteUser(user);
 		if(deleteUser) {
