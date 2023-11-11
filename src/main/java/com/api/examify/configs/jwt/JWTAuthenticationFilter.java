@@ -59,7 +59,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 				// session expire hole msg
 				response.setStatus(HttpStatus.FORBIDDEN.value());
 				response.setContentType("application/json");
-				String errorResponse = "{\"message\":\"Token has expired\"}";
+				String errorResponse = "{\"errorType\":\"TokenExpired\",\"error\":\"Token is expired\"}";
 				response.getWriter().write(errorResponse);
 				response.getWriter().flush();
 				return;
