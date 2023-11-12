@@ -42,6 +42,7 @@ public class SecurityConfig {
         "/api/v1/auth/register",
         "/api/v1/test",
         "UserImages/**",
+        "/api/v1/public/**",
         "/api/v1/auth/delete/user/**",
     };	
 	

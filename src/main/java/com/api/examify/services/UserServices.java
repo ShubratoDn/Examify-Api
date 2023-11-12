@@ -1,5 +1,7 @@
 package com.api.examify.services;
 
+import java.util.List;
+
 import com.api.examify.DTO.UserDto;
 public interface UserServices {
 
@@ -10,5 +12,7 @@ public interface UserServices {
 	public UserDto getUserById(Long id);
 	
 	public boolean deleteUser(UserDto userDto);
+	
+	public List<UserDto> getStudentsByName(String studentName);
 	
 }
