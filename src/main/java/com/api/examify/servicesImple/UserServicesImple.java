@@ -68,6 +68,16 @@ public class UserServicesImple implements UserServices {
 		UserDto map = modelMapper.map(findByEmail, UserDto.class);
 		return map;
 	}
+	
+	// find user by email and role
+	public UserDto getUserByEmail(String email) {
+		User findByEmail = userRepo.findByEmail(email);
+		if (findByEmail == null) {
+			return null;
+		}
+		UserDto map = modelMapper.map(findByEmail, UserDto.class);
+		return map;
+	}
 
 	// deleting user
 	public boolean deleteUser(UserDto userDto) {
@@ -106,10 +116,13 @@ public class UserServicesImple implements UserServices {
 				
 				UserDto map = modelMapper.map(user, UserDto.class);
 				list.add(map);
-			}
-			
+			}			
 	
 			return list;
 		}
+
+		
+		
+		
 
 }

@@ -54,5 +54,7 @@ public class Exam {
 
 	@Enumerated(EnumType.STRING)
 	private ExamState examState; // disable, enable, draft
+	
+	private String token;
 
 }

@@ -52,5 +52,12 @@ public class UserDto {
 	private String image;	
 	
 	private String about;
+
+	@Override
+	public String toString() {
+		return "UserDto [id=" + id + ", email=" + email + ", password=" + password + ", name=" + name + ", roles="
+				+ roles + ", dateJoin=" + dateJoin + ", image=" + image + ", about=" + about + "]";
+	}
+
 	
 }

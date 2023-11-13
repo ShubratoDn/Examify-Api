@@ -24,5 +24,6 @@ public class ExamDto {
     private Date startingTime;
     private ExamState examState;
 
+    private String token;
     // Constructors, getters, and setters
 }

@@ -19,9 +19,14 @@ public class PublicController {
 	@Autowired
 	private UserServices userServices;
 	
+	@GetMapping("/student/")
+    public ResponseEntity<?> redirectToDefaultStudent() {
+		List<UserDto> studentsByName = userServices.getStudentsByName("SHOULD NOT RECEIVE ANY RESP");
+		return ResponseEntity.ok(studentsByName);  
+    }
 	
 	@GetMapping("/student/{username}")
-	public ResponseEntity<?> getStudentByName(@PathVariable String username){
+	public ResponseEntity<?> getStudentByName(@PathVariable String username){		
 		List<UserDto> studentsByName = userServices.getStudentsByName(username);
 		return ResponseEntity.ok(studentsByName);
 	}
